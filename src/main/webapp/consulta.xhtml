@@ -13,21 +13,37 @@
 <h:body>
 	<h:form>
 		<p:menubar>
-			<p:menuitem value="Home" icon="ui-icon-home" />
-			<p:menuitem value="Cadastro" icon="ui-icon-document" />
-			<p:menuitem value="Consulta" icon="ui-icon-document" />
+			<p:menuitem value="Cadastro" icon="ui-icon-document" action="cadastro.xhtml" />
+			<p:menuitem value="Consulta" icon="ui-icon-document" action="consulta.xhtml" />
 		</p:menubar>
 	</h:form>
 
+	<h:panelGroup styleClass="center">
+		<p:commandButton id="btn-enviar" value="Cadastrar"
+			action="#{tarefaController.buscarTodas}" />
+	</h:panelGroup>
+
 	<div class="formulario center">
 		<h:panelGroup styleClass="center">
-			<p:dataTable value="#{eventoBean.eventos}" var="e" border="1"
-				id="table">
-				<p:column headerText="Nome">#{e.nome}</p:column>
-				<p:column headerText="Organização">#{e.organizacao}</p:column>
-				<p:column headerText="Local">#{e.local}</p:column>
-				<p:column headerText="Data">#{e.data}</p:column>
-				<p:column headerText="Horário">#{e.horario}</p:column>
+			<p:dataTable value="#{tarefaController.tarefas}" var="tarefa"
+				border="1" id="table">
+				
+				<p:column headerText="Título">
+					<h:outputText value="#{tarefa.titulo}" />
+				</p:column>	
+				
+				<p:column headerText="Descrição">
+					<h:outputText value="#{tarefa.descricao}" />
+				</p:column>	
+				
+				<p:column headerText="Responsável">
+					<h:outputText value="#{tarefa.responsavel}" />
+				</p:column>	
+				
+				<p:column headerText="Deadline">
+					<h:outputText value="#{tarefa.deadline}" />
+				</p:column>	
+			
 			</p:dataTable>
 		</h:panelGroup>
 	</div>

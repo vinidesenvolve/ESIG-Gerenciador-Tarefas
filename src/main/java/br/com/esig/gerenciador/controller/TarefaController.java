@@ -1,7 +1,9 @@
 package br.com.esig.gerenciador.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -16,30 +18,38 @@ import br.com.esig.gerenciador.model.Tarefa;
 @RequestScoped
 public class TarefaController {
 
-	EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("TarefasPU");
-	EntityManager entityManager = entityManagerFactory.createEntityManager();
-
 	@Inject
-	Tarefa tarefa;
+	private Tarefa tarefa;
 
+	private List<Tarefa> tarefas = buscarTodas();
+	
 	public void salvar() {
-		
+
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("TarefasPU");
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+
 		entityManager.getTransaction().begin();
 		entityManager.persist(tarefa);
 		entityManager.getTransaction().commit();
 
 		entityManager.close();
 		entityManagerFactory.close();
+
+		buscarTodas();
 	}
 
-	private List<Tarefa> tarefas = new ArrayList<>();
+	public List<Tarefa> buscarTodas() {
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("TarefasPU");
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
 
-	public void salvar2() {
-		tarefas.add(tarefa);
-		System.out.println("Tarefa: " + tarefa.getTitulo());
-		this.tarefa = new Tarefa();
+		List<Tarefa> tarefasDB = entityManager.createQuery("select t from Tarefa as t").getResultList();
+		
+		entityManager.close();
+		entityManagerFactory.close();
+		
+		return tarefasDB;
 	}
-
+	
 	public Tarefa getTarefa() {
 		return tarefa;
 	}
