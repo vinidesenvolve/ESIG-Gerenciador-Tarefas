@@ -45,37 +45,52 @@
 				</div>
 
 				<h:panelGroup styleClass="center">
-					<p:commandButton id="btn-enviar" value="Buscar Tarefas"
+					<p:commandButton id="btn-buscar" value="Buscar Tarefas"
 						action="#{tarefaController.buscarTodas}" />
 				</h:panelGroup>
 			</h:panelGrid>
 		</h:form>
 	</div>
 
-	<div class="formulario center">
-		<h:panelGroup styleClass="center">
-			<p:dataTable value="#{tarefaController.tarefas}" var="tarefa"
-				border="1" id="table">
+	<h:form id="tableForm">
+		<div class="formulario center">
+			<h:panelGroup styleClass="center">
+				<p:dataTable value="#{tarefaController.tarefas}" var="tarefa"
+					border="1" id="table">
 
-				<p:column headerText="Número">
-					<h:outputText value="#{tarefa.id}" />
-				</p:column>
+					<p:column headerText="Número">
+						<h:outputText value="#{tarefa.id}" />
+					</p:column>
 
-				<p:column headerText="Título">
-					<h:outputText value="#{tarefa.titulo}" />
-				</p:column>
+					<p:column headerText="Título">
+						<h:outputText value="#{tarefa.titulo}" />
+					</p:column>
 
-				<p:column headerText="Responsável">
-					<h:outputText value="#{tarefa.responsavel}" />
-				</p:column>
+					<p:column headerText="Responsável">
+						<h:outputText value="#{tarefa.responsavel}" />
+					</p:column>
 
-				<p:column headerText="Ações">
-					<h:outputText value=""> Edita | Excluir | Concluir </h:outputText>
-				</p:column>
+					<p:column headerText="Ações">
+						<p:commandLink action="#{tarefaController.buscarPorId(tarefa)}">
+							<h:outputText value="Editar" />
+						</p:commandLink>
 
-			</p:dataTable>
-		</h:panelGroup>
-	</div>
+						<h:outputText value=" | " />
 
+						<p:commandLink action="#{tarefaController.excluir(tarefa.id)}">
+							<h:outputText value="Excluir" />
+						</p:commandLink>
+
+						<h:outputText value=" | " />
+
+						<p:commandLink action="#{tarefaController.concluir(tarefa.id)}">
+							<h:outputText value="Concluir" />
+						</p:commandLink>
+					</p:column>
+
+				</p:dataTable>
+			</h:panelGroup>
+		</div>
+	</h:form>
 </h:body>
 </html>

@@ -22,8 +22,8 @@ public class TarefaController {
 	private Tarefa tarefa;
 
 	private List<Tarefa> tarefas = buscarTodas();
-	
-	public void salvar() {
+
+	public String salvar() {
 
 		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("TarefasPU");
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -36,21 +36,98 @@ public class TarefaController {
 		entityManager.close();
 		entityManagerFactory.close();
 
-		buscarTodas();
+		return "/cadastro.xhtml?faces-redirect=true";
 	}
 
 	public List<Tarefa> buscarTodas() {
+		
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("TarefasPU");
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		
+		List<Tarefa> tarefasDB = entityManager.createQuery("select t from Tarefa as t").getResultList();
+
+		entityManager.close();
+		entityManagerFactory.close();
+
+		return tarefasDB;
+	}
+
+	// GETS...
+	public List<Tarefa> buscarConcluidas() {
 		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("TarefasPU");
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 
-		List<Tarefa> tarefasDB = entityManager.createQuery("select t from Tarefa as t").getResultList();
+		List<Tarefa> tarefasConcluidas = entityManager.createQuery("select t from Tarefa as t where t.isConcluida=false").getResultList();
+
+		entityManager.close();
+		entityManagerFactory.close();
+
+		return tarefas;
+	}
+	
+	public void buscarPorId(Tarefa tarefa) {
+		System.out.println(tarefa.getId());
+
+	}
+	
+	// PUT
+	public String editar(Tarefa tarefaAtualizada) {
 		
+		System.out.println(tarefaAtualizada.getId());
+//		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("TarefasPU");
+//		EntityManager entityManager = entityManagerFactory.createEntityManager();
+//
+//		Tarefa tarefa = entityManager.find(Tarefa.class, tarefaAtualizada.getId());
+//
+//		entityManager.getTransaction().begin();
+//
+//		tarefa.setTitulo(tarefaAtualizada.getTitulo());
+//		tarefa.setDescricao(tarefaAtualizada.getDescricao());
+//		tarefa.setResponsavel(tarefaAtualizada.getResponsavel());
+//		tarefa.setPrioridade(tarefaAtualizada.getPrioridade());
+//		tarefa.setDeadline(tarefaAtualizada.getDeadline());
+//
+//		entityManager.getTransaction().commit();
+//
+//		entityManager.close();
+//		entityManagerFactory.close();
+
+		return "/consulta.xhtml?faces-redirect=true";
+	}
+
+	public String concluir(Long id) {
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("TarefasPU");
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+		Tarefa tarefa = entityManager.find(Tarefa.class, id);
+
+		entityManager.getTransaction().begin();
+		tarefa.setisConcluida(true);
+		entityManager.getTransaction().commit();
+
+		entityManager.close();
+		entityManagerFactory.close();
+
+		return "/consulta.xhtml?faces-redirect=true";
+	}
+
+	public String excluir(Long id) {
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("TarefasPU");
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+		Tarefa tarefa = entityManager.find(Tarefa.class, id);
+
+		entityManager.getTransaction().begin();
+		entityManager.remove(tarefa);
+		entityManager.getTransaction().commit();
+
 		entityManager.close();
 		entityManagerFactory.close();
 		
-		return tarefasDB;
+		return "/consulta.xhtml?faces-redirect=true";
 	}
-	
+
+	// GETTERS & SETTERS
 	public Tarefa getTarefa() {
 		return tarefa;
 	}
