@@ -29,6 +29,7 @@ public class TarefaController {
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 
 		entityManager.getTransaction().begin();
+		tarefa.setisConcluida(false);
 		entityManager.persist(tarefa);
 		entityManager.getTransaction().commit();
 

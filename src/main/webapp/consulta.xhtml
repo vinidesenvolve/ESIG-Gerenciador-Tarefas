@@ -13,37 +13,66 @@
 <h:body>
 	<h:form>
 		<p:menubar>
-			<p:menuitem value="Cadastro" icon="ui-icon-document" action="cadastro.xhtml" />
-			<p:menuitem value="Consulta" icon="ui-icon-document" action="consulta.xhtml" />
+			<p:menuitem value="Cadastro" icon="ui-icon-document"
+				action="cadastro.xhtml" />
+			<p:menuitem value="Consulta" icon="ui-icon-document"
+				action="consulta.xhtml" />
 		</p:menubar>
 	</h:form>
 
-	<h:panelGroup styleClass="center">
-		<p:commandButton id="btn-enviar" value="Cadastrar"
-			action="#{tarefaController.buscarTodas}" />
-	</h:panelGroup>
+	<div class="formulario center">
+		<h:form id="form">
+			<h:panelGrid>
+
+				<p:outputLabel value="Número" />
+				<p:inputText value="#{tarefaController.tarefa.id}" />
+
+				<p:outputLabel value="Título/Descrição" />
+				<p:inputText value="#{tarefaController.tarefa.titulo}" />
+
+				<p:outputLabel value="Responsável" />
+				<p:inputText value="#{tarefaController.tarefa.responsavel}" />
+
+				<div class="ui-fluid p-formgrid p-grid">
+					<div class="p-field p-col-12 p-md-4">
+						<p:outputLabel for="@next" value="Situação" />
+						<p:selectOneMenu id="option"
+							value="#{tarefaController.tarefa.isConcluida}">
+							<f:selectItem itemLabel="Em andamento" itemValue="False" />
+							<f:selectItem itemLabel="Concluída" itemValue="True" />
+						</p:selectOneMenu>
+					</div>
+				</div>
+
+				<h:panelGroup styleClass="center">
+					<p:commandButton id="btn-enviar" value="Buscar Tarefas"
+						action="#{tarefaController.buscarTodas}" />
+				</h:panelGroup>
+			</h:panelGrid>
+		</h:form>
+	</div>
 
 	<div class="formulario center">
 		<h:panelGroup styleClass="center">
 			<p:dataTable value="#{tarefaController.tarefas}" var="tarefa"
 				border="1" id="table">
-				
+
+				<p:column headerText="Número">
+					<h:outputText value="#{tarefa.id}" />
+				</p:column>
+
 				<p:column headerText="Título">
 					<h:outputText value="#{tarefa.titulo}" />
-				</p:column>	
-				
-				<p:column headerText="Descrição">
-					<h:outputText value="#{tarefa.descricao}" />
-				</p:column>	
-				
+				</p:column>
+
 				<p:column headerText="Responsável">
 					<h:outputText value="#{tarefa.responsavel}" />
-				</p:column>	
-				
-				<p:column headerText="Deadline">
-					<h:outputText value="#{tarefa.deadline}" />
-				</p:column>	
-			
+				</p:column>
+
+				<p:column headerText="Ações">
+					<h:outputText value=""> Edita | Excluir | Concluir </h:outputText>
+				</p:column>
+
 			</p:dataTable>
 		</h:panelGroup>
 	</div>

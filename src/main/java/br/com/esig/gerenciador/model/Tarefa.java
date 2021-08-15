@@ -22,9 +22,18 @@ public class Tarefa {
 	private String descricao;
 	private String responsavel;
 	private String prioridade; //alta média baixa
+	private Boolean isConcluida; //Andamento || Concluida
 	
 	@Temporal(TemporalType.DATE)
 	private Date deadline;
+
+	public Boolean getisConcluida() {
+		return isConcluida;
+	}
+
+	public void setisConcluida(Boolean isConcluida) {
+		this.isConcluida = isConcluida;
+	}
 
 	public String getDescricao() {
 		return descricao;
