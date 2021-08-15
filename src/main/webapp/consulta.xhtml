@@ -71,9 +71,9 @@
 					</p:column>
 
 					<p:column headerText="Ações">
-						<p:commandLink action="#{tarefaController.buscarPorId(tarefa)}">
-							<h:outputText value="Editar" />
-						</p:commandLink>
+						<h:link value="Editar" outcome="edicao.xhtml">
+							 <f:param name="tarefaId" value="#{tarefa.id}"/>
+						</h:link>
 
 						<h:outputText value=" | " />
 

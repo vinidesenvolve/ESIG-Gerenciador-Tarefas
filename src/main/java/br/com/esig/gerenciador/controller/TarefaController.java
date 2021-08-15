@@ -5,7 +5,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -21,7 +23,20 @@ public class TarefaController {
 	@Inject
 	private Tarefa tarefa;
 
+	private Long tarefaId;
+
 	private List<Tarefa> tarefas = buscarTodas();
+
+	@PostConstruct
+	public void postConstruct() {
+		String tarefaIdParam = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
+				.get("tarefaId");
+
+		if (tarefaIdParam != null) {
+			tarefaId = Long.parseLong(tarefaIdParam);
+			tarefa = buscarPorId(tarefaId);
+		}
+	}
 
 	public String salvar() {
 
@@ -29,21 +44,20 @@ public class TarefaController {
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 
 		entityManager.getTransaction().begin();
-		tarefa.setisConcluida(false);
 		entityManager.persist(tarefa);
 		entityManager.getTransaction().commit();
 
 		entityManager.close();
 		entityManagerFactory.close();
 
-		return "/cadastro.xhtml?faces-redirect=true";
+		return "/consulta.xhtml?faces-redirect=true";
 	}
 
 	public List<Tarefa> buscarTodas() {
-		
+
 		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("TarefasPU");
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
-		
+
 		List<Tarefa> tarefasDB = entityManager.createQuery("select t from Tarefa as t").getResultList();
 
 		entityManager.close();
@@ -52,45 +66,42 @@ public class TarefaController {
 		return tarefasDB;
 	}
 
-	// GETS...
+//Buscas
 	public List<Tarefa> buscarConcluidas() {
 		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("TarefasPU");
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 
-		List<Tarefa> tarefasConcluidas = entityManager.createQuery("select t from Tarefa as t where t.isConcluida=false").getResultList();
+		List<Tarefa> tarefasConcluidas = entityManager
+				.createQuery("select t from Tarefa as t where t.isConcluida=false").getResultList();
 
 		entityManager.close();
 		entityManagerFactory.close();
 
 		return tarefas;
 	}
-	
-	public void buscarPorId(Tarefa tarefa) {
-		System.out.println(tarefa.getId());
 
+	public Tarefa buscarPorId(Long id) {
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("TarefasPU");
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+		Tarefa tarefa = entityManager.find(Tarefa.class, id);
+
+		entityManager.close();
+		entityManagerFactory.close();
+
+		return tarefa;
 	}
-	
-	// PUT
-	public String editar(Tarefa tarefaAtualizada) {
-		
-		System.out.println(tarefaAtualizada.getId());
-//		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("TarefasPU");
-//		EntityManager entityManager = entityManagerFactory.createEntityManager();
-//
-//		Tarefa tarefa = entityManager.find(Tarefa.class, tarefaAtualizada.getId());
-//
-//		entityManager.getTransaction().begin();
-//
-//		tarefa.setTitulo(tarefaAtualizada.getTitulo());
-//		tarefa.setDescricao(tarefaAtualizada.getDescricao());
-//		tarefa.setResponsavel(tarefaAtualizada.getResponsavel());
-//		tarefa.setPrioridade(tarefaAtualizada.getPrioridade());
-//		tarefa.setDeadline(tarefaAtualizada.getDeadline());
-//
-//		entityManager.getTransaction().commit();
-//
-//		entityManager.close();
-//		entityManagerFactory.close();
+
+	public String editar() {
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("TarefasPU");
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+		entityManager.getTransaction().begin();
+		entityManager.merge(tarefa);
+		entityManager.getTransaction().commit();
+
+		entityManager.close();
+		entityManagerFactory.close();
 
 		return "/consulta.xhtml?faces-redirect=true";
 	}
@@ -123,7 +134,7 @@ public class TarefaController {
 
 		entityManager.close();
 		entityManagerFactory.close();
-		
+
 		return "/consulta.xhtml?faces-redirect=true";
 	}
 
@@ -144,4 +155,11 @@ public class TarefaController {
 		this.tarefas = tarefas;
 	}
 
+	public Long getTarefaId() {
+		return tarefaId;
+	}
+
+	public void setTarefaId(Long tarefaId) {
+		this.tarefaId = tarefaId;
+	}
 }

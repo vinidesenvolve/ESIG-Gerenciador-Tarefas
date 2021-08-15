@@ -22,7 +22,7 @@ public class Tarefa {
 	private String descricao;
 	private String responsavel;
 	private String prioridade; //alta média baixa
-	private Boolean isConcluida; //Andamento || Concluida
+	private Boolean isConcluida = false; //Andamento || Concluida
 	
 	@Temporal(TemporalType.DATE)
 	private Date deadline;

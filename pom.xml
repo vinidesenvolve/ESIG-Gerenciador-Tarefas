@@ -100,8 +100,16 @@
 			<artifactId>jandex</artifactId>
 			<version>1.2.2.Final</version>
 		</dependency>
+	
+		<!-- fetch param from url -->
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-web-api</artifactId>
+			<version>6.0</version>
+			<scope>provided</scope>
+		</dependency>
+		
 	</dependencies>
-
 	<build>
 		<finalName>gerenciador</finalName>
 		<pluginManagement><!-- lock down plugins versions to avoid using Maven 
