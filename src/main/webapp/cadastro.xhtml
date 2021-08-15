@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<h:outputStylesheet library="css" name="styles.css"></h:outputStylesheet>
+	<title>ESIG - Gerenciador de Tarefas</title>
+</h:head>
+
+<h:body>
+	<h:form>
+		<p:menubar>
+			<p:menuitem value="Home" icon="ui-icon-home" />
+			<p:menuitem value="Cadastro" icon="ui-icon-document" />
+			<p:menuitem value="Consulta" icon="ui-icon-document" />
+		</p:menubar>
+	</h:form>
+
+	<div class="formulario center">
+		<h:form id="form">
+			<h:panelGrid>
+				<p:outputLabel value="Título" />
+				<p:inputText value="#{tarefaController.tarefa.titulo}" />
+
+				<p:outputLabel value="Descrição" />
+				<p:inputTextarea value="#{tarefaController.tarefa.descricao}" />
+
+				<p:outputLabel value="Responsável" />
+				<p:inputText value="#{tarefaController.tarefa.responsavel}" />
+
+				<div class="ui-fluid p-formgrid p-grid">
+					<div class="p-field p-col-12 p-md-4">
+						<p:outputLabel for="@next" value="Prioridade" />
+						<p:selectOneMenu id="option"
+							value="#{tarefaController.tarefa.prioridade}">
+							<f:selectItem itemLabel="Alta" itemValue="Alta" />
+							<f:selectItem itemLabel="Média" itemValue="Média" />
+							<f:selectItem itemLabel="Baixa" itemValue="Baixa" />
+						</p:selectOneMenu>
+					</div>
+				</div>
+
+				<p:outputLabel  value="Deadline" />
+				<p:calendar value="#{tarefaController.tarefa.deadline}"
+					pattern="dd/MM/yyyy" timeZone="America/Brasilia"/>
+
+				<h:panelGroup styleClass="center">
+					<p:commandButton id="btn-enviar" value="Cadastrar"
+						action="#{tarefaController.salvar}" />
+				</h:panelGroup>
+			</h:panelGrid>
+		</h:form>
+	</div>
+</h:body>
+</html>
