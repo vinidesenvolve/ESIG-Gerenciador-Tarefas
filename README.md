@@ -17,6 +17,10 @@ Desenvolvida com JPA, PostgreSQL, JSF e PrimeFaces
  <a href="#licença">Licença</a> - 
 </p>
 
+
+https://user-images.githubusercontent.com/75989911/129587942-2f757699-a46b-49a6-98b0-0fc74e0eaf61.mp4
+
+
 ## Status 
 
 Em desenvolvimento
