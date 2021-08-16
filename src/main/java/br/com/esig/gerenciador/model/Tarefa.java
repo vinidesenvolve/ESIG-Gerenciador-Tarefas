@@ -15,7 +15,7 @@ import javax.persistence.TemporalType;
 public class Tarefa {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
 	private String titulo;

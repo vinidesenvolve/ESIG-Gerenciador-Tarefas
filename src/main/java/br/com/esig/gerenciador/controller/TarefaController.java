@@ -3,6 +3,7 @@ package br.com.esig.gerenciador.controller;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
@@ -53,31 +54,50 @@ public class TarefaController {
 		return "/consulta.xhtml?faces-redirect=true";
 	}
 
-	public List<Tarefa> buscarTodas() {
+	public void buscar() { // Jogar HTML
 
-		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("TarefasPU");
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
-
-		List<Tarefa> tarefasDB = entityManager.createQuery("select t from Tarefa as t").getResultList();
-
-		entityManager.close();
-		entityManagerFactory.close();
-
-		return tarefasDB;
+		if (tarefa.getisConcluida()) {
+			buscarTodasConcluidas().stream().forEach(System.out::println);
+		} else {
+			buscarTodasAndamento().stream().forEach(System.out::println);
+		}
 	}
 
-//Buscas
-	public List<Tarefa> buscarConcluidas() {
+	public List<Tarefa> buscarTodas() {
 		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("TarefasPU");
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 
-		List<Tarefa> tarefasConcluidas = entityManager
-				.createQuery("select t from Tarefa as t where t.isConcluida=false").getResultList();
+		List<Tarefa> tarefasAndamento = entityManager.createQuery("select t from Tarefa as t").getResultList();
 
 		entityManager.close();
 		entityManagerFactory.close();
 
-		return tarefas;
+		return tarefasAndamento;
+	}
+
+	public List<Tarefa> buscarTodasAndamento() {
+
+		List<Tarefa> tarefasAndamento = buscarTodas().stream()
+				.filter(t -> t.getisConcluida() == false)
+				.filter(t -> t.getTitulo().contains(tarefa.getTitulo()))
+				.filter(t -> t.getDescricao().contains(tarefa.getTitulo()))
+				.filter(t -> t.getResponsavel().contains(tarefa.getResponsavel()))
+				//.filter(t -> t.getId().toString().contains(tarefa.getId().toString()))// ID
+				.collect(Collectors.toList());
+
+		return tarefasAndamento;
+	}
+
+	public List<Tarefa> buscarTodasConcluidas() {
+		List<Tarefa> tarefasConcluidas = buscarTodas().stream()
+				.filter(t -> t.getisConcluida())
+				.filter(t -> t.getTitulo().contains(tarefa.getTitulo()))
+				.filter(t -> t.getDescricao().contains(tarefa.getTitulo()))
+				.filter(t -> t.getResponsavel().contains(tarefa.getResponsavel()))
+				//.filter(t -> t.getId().toString().contains(tarefa.getId().toString()))// ID
+				.collect(Collectors.toList());
+
+		return tarefasConcluidas;
 	}
 
 	public Tarefa buscarPorId(Long id) {
