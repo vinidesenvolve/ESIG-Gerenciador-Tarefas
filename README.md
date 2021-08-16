@@ -9,6 +9,7 @@ Desenvolvida com JPA, PostgreSQL, JSF e PrimeFaces
 ## Índice
 <p align="center"> - 
  <a href="#status">Status</a> - 
+ <a href="#status"> Funcionalidades </a> - 
  <a href="#requisitos">Requisitos</a> - 
  <a href="#executando">Executando</a> - 
  <a href="#tecnologias">Tecnologias</a> - 
