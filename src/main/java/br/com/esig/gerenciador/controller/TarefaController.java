@@ -1,9 +1,6 @@
 package br.com.esig.gerenciador.controller;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
@@ -15,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import br.com.esig.gerenciador.Exception.ExcecaoGenerica;
 import br.com.esig.gerenciador.model.Tarefa;
 
 @Named(value = "tarefaController")
@@ -39,23 +37,8 @@ public class TarefaController {
 		}
 	}
 
-	public String salvar() {
-
-		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("TarefasPU");
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
-
-		entityManager.getTransaction().begin();
-		entityManager.persist(tarefa);
-		entityManager.getTransaction().commit();
-
-		entityManager.close();
-		entityManagerFactory.close();
-
-		return "/consulta.xhtml?faces-redirect=true";
-	}
-
-	public void buscar() { // Jogar HTML
-
+	public void buscar() {
+		// Carrega no dataTable
 		if (tarefa.getisConcluida()) {
 			buscarTodasConcluidas().stream().forEach(System.out::println);
 		} else {
@@ -67,34 +50,36 @@ public class TarefaController {
 		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("TarefasPU");
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 
-		List<Tarefa> tarefasAndamento = entityManager.createQuery("select t from Tarefa as t").getResultList();
+		try {
+			List<Tarefa> tarefasAndamento = entityManager.createQuery("select t from Tarefa as t").getResultList();
+			return tarefasAndamento;
+		} catch (Exception e) {
+			throw new ExcecaoGenerica();
+		} finally {
+			entityManager.close();
+			entityManagerFactory.close();
+		}
 
-		entityManager.close();
-		entityManagerFactory.close();
-
-		return tarefasAndamento;
 	}
 
 	public List<Tarefa> buscarTodasAndamento() {
 
-		List<Tarefa> tarefasAndamento = buscarTodas().stream()
-				.filter(t -> t.getisConcluida() == false)
+		List<Tarefa> tarefasAndamento = buscarTodas().stream().filter(t -> t.getisConcluida() == false)
 				.filter(t -> t.getTitulo().contains(tarefa.getTitulo()))
 				.filter(t -> t.getDescricao().contains(tarefa.getTitulo()))
 				.filter(t -> t.getResponsavel().contains(tarefa.getResponsavel()))
-				//.filter(t -> t.getId().toString().contains(tarefa.getId().toString()))// ID
+				// .filter(t -> t.getId().toString().contains(tarefa.getId().toString()))// ID
 				.collect(Collectors.toList());
 
 		return tarefasAndamento;
 	}
 
 	public List<Tarefa> buscarTodasConcluidas() {
-		List<Tarefa> tarefasConcluidas = buscarTodas().stream()
-				.filter(t -> t.getisConcluida())
+		List<Tarefa> tarefasConcluidas = buscarTodas().stream().filter(t -> t.getisConcluida())
 				.filter(t -> t.getTitulo().contains(tarefa.getTitulo()))
 				.filter(t -> t.getDescricao().contains(tarefa.getTitulo()))
 				.filter(t -> t.getResponsavel().contains(tarefa.getResponsavel()))
-				//.filter(t -> t.getId().toString().contains(tarefa.getId().toString()))// ID
+				// .filter(t -> t.getId().toString().contains(tarefa.getId().toString()))// ID
 				.collect(Collectors.toList());
 
 		return tarefasConcluidas;
@@ -104,24 +89,52 @@ public class TarefaController {
 		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("TarefasPU");
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 
-		Tarefa tarefa = entityManager.find(Tarefa.class, id);
+		try {
+			Tarefa tarefa = entityManager.find(Tarefa.class, id);
+			return tarefa;
+		} catch (Exception e) {
+			throw new ExcecaoGenerica();
+		} finally {
+			entityManager.close();
+			entityManagerFactory.close();
+		}
+	}
 
-		entityManager.close();
-		entityManagerFactory.close();
+	public String salvar() {
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("TarefasPU");
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
 
-		return tarefa;
+		try {
+			entityManager.getTransaction().begin();
+			entityManager.persist(tarefa);
+			entityManager.getTransaction().commit();
+
+		} catch (Exception e) {
+			throw new ExcecaoGenerica();
+		} finally {
+			entityManager.close();
+			entityManagerFactory.close();
+		}
+
+		return "/consulta.xhtml?faces-redirect=true";
 	}
 
 	public String editar() {
 		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("TarefasPU");
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 
-		entityManager.getTransaction().begin();
-		entityManager.merge(tarefa);
-		entityManager.getTransaction().commit();
+		try {
+			entityManager.getTransaction().begin();
+			entityManager.merge(tarefa);
+			entityManager.getTransaction().commit();
+		} catch (Exception e) {
+			throw new ExcecaoGenerica();
+		} finally {
+			entityManager.close();
+			entityManagerFactory.close();
+		}
 
-		entityManager.close();
-		entityManagerFactory.close();
+		tarefaId = null;
 
 		return "/consulta.xhtml?faces-redirect=true";
 	}
@@ -130,14 +143,20 @@ public class TarefaController {
 		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("TarefasPU");
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 
-		Tarefa tarefa = entityManager.find(Tarefa.class, id);
+		try {
+			Tarefa tarefa = entityManager.find(Tarefa.class, id);
 
-		entityManager.getTransaction().begin();
-		tarefa.setisConcluida(true);
-		entityManager.getTransaction().commit();
+			entityManager.getTransaction().begin();
+			tarefa.setisConcluida(true);
+			entityManager.getTransaction().commit();
 
-		entityManager.close();
-		entityManagerFactory.close();
+		} catch (Exception e) {
+			throw new ExcecaoGenerica();
+		} finally {
+			entityManager.close();
+			entityManagerFactory.close();
+
+		}
 
 		return "/consulta.xhtml?faces-redirect=true";
 	}
@@ -146,14 +165,20 @@ public class TarefaController {
 		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("TarefasPU");
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 
-		Tarefa tarefa = entityManager.find(Tarefa.class, id);
+		try {
+			Tarefa tarefa = entityManager.find(Tarefa.class, id);
 
-		entityManager.getTransaction().begin();
-		entityManager.remove(tarefa);
-		entityManager.getTransaction().commit();
+			entityManager.getTransaction().begin();
+			entityManager.remove(tarefa);
+			entityManager.getTransaction().commit();
 
-		entityManager.close();
-		entityManagerFactory.close();
+		} catch (Exception e) {
+			throw new ExcecaoGenerica();
+		} finally {
+			entityManager.close();
+			entityManagerFactory.close();
+
+		}
 
 		return "/consulta.xhtml?faces-redirect=true";
 	}

@@ -19,11 +19,10 @@
 				action="consulta.xhtml" />
 		</p:menubar>
 	</h:form>
-
-	<div class="formulario center">
+	<br />
+	<div>
 		<h:form id="form">
-			<h:panelGrid>
-
+			<h:panelGrid styleClass="center">
 				<p:outputLabel value="Número" />
 				<p:inputText value="#{tarefaController.tarefa.id}" />
 
@@ -43,7 +42,7 @@
 						</p:selectOneMenu>
 					</div>
 				</div>
-
+				<br />
 				<h:panelGroup styleClass="center">
 					<p:commandButton id="btn-buscar" value="Buscar Tarefas"
 						action="#{tarefaController.buscar}" />
@@ -51,28 +50,29 @@
 			</h:panelGrid>
 		</h:form>
 	</div>
+	<br />
+	<div>
+		<h:panelGroup styleClass="center">
+			<p:dataTable value="#{tarefaController.tarefas}" var="tarefa"
+				border="1" id="table" paginator="true" rows="5">
 
-	<h:form id="tableForm">
-		<div class="formulario center">
-			<h:panelGroup styleClass="center">
-				<p:dataTable value="#{tarefaController.tarefas}" var="tarefa"
-					border="1" id="table">
+				<p:column headerText="Número">
+					<h:outputText styleClass="center" value="#{tarefa.id}" />
+				</p:column>
 
-					<p:column headerText="Número">
-						<h:outputText value="#{tarefa.id}" />
-					</p:column>
+				<p:column headerText="Título">
+					<h:outputText styleClass="center" value="#{tarefa.titulo}" />
+				</p:column>
 
-					<p:column headerText="Título">
-						<h:outputText value="#{tarefa.titulo}" />
-					</p:column>
+				<p:column headerText="Responsável">
+					<h:outputText styleClass="center" value="#{tarefa.responsavel}" />
+				</p:column>
 
-					<p:column headerText="Responsável">
-						<h:outputText value="#{tarefa.responsavel}" />
-					</p:column>
 
-					<p:column headerText="Ações">
+				<p:column headerText="Ações">
+					<h:form styleClass="center">
 						<h:link value="Editar" outcome="edicao.xhtml">
-							 <f:param name="tarefaId" value="#{tarefa.id}"/>
+							<f:param name="tarefaId" value="#{tarefa.id}" />
 						</h:link>
 
 						<h:outputText value=" | " />
@@ -86,11 +86,11 @@
 						<p:commandLink action="#{tarefaController.concluir(tarefa.id)}">
 							<h:outputText value="Concluir" />
 						</p:commandLink>
-					</p:column>
+					</h:form>
+				</p:column>
 
-				</p:dataTable>
-			</h:panelGroup>
-		</div>
-	</h:form>
+			</p:dataTable>
+		</h:panelGroup>
+	</div>
 </h:body>
 </html>

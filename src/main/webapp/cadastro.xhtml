@@ -13,11 +13,13 @@
 <h:body>
 	<h:form>
 		<p:menubar>
-			<p:menuitem value="Cadastro" icon="ui-icon-document" action="cadastro.xhtml" />
-			<p:menuitem value="Consulta" icon="ui-icon-document" action="consulta.xhtml" />
+			<p:menuitem value="Cadastro" icon="ui-icon-document"
+				action="cadastro.xhtml" />
+			<p:menuitem value="Consulta" icon="ui-icon-document"
+				action="consulta.xhtml" />
 		</p:menubar>
 	</h:form>
-
+	<br />
 	<div class="formulario center">
 		<h:form id="form">
 			<h:panelGrid>
@@ -42,15 +44,15 @@
 					</div>
 				</div>
 
-				<p:outputLabel  value="Deadline" />
+				<p:outputLabel value="Deadline" />
 				<p:calendar value="#{tarefaController.tarefa.deadline}"
-					pattern="dd/MM/yyyy" timeZone="America/Brasilia"/>
-
+					pattern="dd/MM/yyyy" timeZone="America/Brasilia" />
+				<br />
 				<h:panelGroup styleClass="center">
 					<p:commandButton id="btn-salvar" value="Cadastrar"
-						action="#{tarefaController.salvar}"/>
+						action="#{tarefaController.salvar}" />
 				</h:panelGroup>
-				
+
 			</h:panelGrid>
 		</h:form>
 	</div>
