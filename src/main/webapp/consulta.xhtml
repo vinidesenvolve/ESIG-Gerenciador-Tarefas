@@ -11,6 +11,9 @@
 </h:head>
 
 <h:body>
+	<f:metadata>
+		<f:viewAction action="#{tarefaController.buscarTodas}" />
+	</f:metadata>
 	<h:form>
 		<p:menubar>
 			<p:menuitem value="Cadastro" icon="ui-icon-document"
@@ -39,13 +42,14 @@
 							value="#{tarefaController.tarefa.isConcluida}">
 							<f:selectItem itemLabel="Em andamento" itemValue="False" />
 							<f:selectItem itemLabel="Concluída" itemValue="True" />
+							<f:selectItem itemLabel="Todas" itemValue="null" />
 						</p:selectOneMenu>
 					</div>
 				</div>
 				<br />
 				<h:panelGroup styleClass="center">
 					<p:commandButton id="btn-buscar" value="Buscar Tarefas"
-						action="#{tarefaController.buscar}" />
+						action="#{tarefaController.buscarTarefas}" update="table" />
 				</h:panelGroup>
 			</h:panelGrid>
 		</h:form>
@@ -67,7 +71,6 @@
 				<p:column headerText="Responsável">
 					<h:outputText styleClass="center" value="#{tarefa.responsavel}" />
 				</p:column>
-
 
 				<p:column headerText="Ações">
 					<h:form styleClass="center">

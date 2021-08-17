@@ -1,5 +1,6 @@
 package br.com.esig.gerenciador.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,11 +10,10 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
-import br.com.esig.gerenciador.Exception.ExcecaoGenerica;
 import br.com.esig.gerenciador.model.Tarefa;
+import br.com.esig.gerenciador.repository.TarefaRepository;
+import br.com.esig.gerenciador.util.JpaUtil;
 
 @Named(value = "tarefaController")
 @RequestScoped
@@ -24,7 +24,7 @@ public class TarefaController {
 
 	private Long tarefaId;
 
-	private List<Tarefa> tarefas = buscarTodas();
+	private List<Tarefa> tarefas = new ArrayList<>();
 
 	@PostConstruct
 	public void postConstruct() {
@@ -37,101 +37,99 @@ public class TarefaController {
 		}
 	}
 
-	public void buscar() {
-		// Carrega no dataTable
-		if (tarefa.getisConcluida()) {
-			buscarTodasConcluidas().stream().forEach(System.out::println);
-		} else {
-			buscarTodasAndamento().stream().forEach(System.out::println);
-		}
-	}
-
-	public List<Tarefa> buscarTodas() {
-		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("TarefasPU");
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
+	public void buscarTodas() {
+		EntityManager entityManager = JpaUtil.getEntityManager();
 
 		try {
-			List<Tarefa> tarefasAndamento = entityManager.createQuery("select t from Tarefa as t").getResultList();
-			return tarefasAndamento;
+
+			TarefaRepository tarefaRepo = new TarefaRepository(entityManager);
+			this.tarefas = tarefaRepo.buscarTodas();
+
 		} catch (Exception e) {
-			throw new ExcecaoGenerica();
+			throw (e);
 		} finally {
 			entityManager.close();
-			entityManagerFactory.close();
 		}
 
 	}
 
-	public List<Tarefa> buscarTodasAndamento() {
+	//Pesquisar todas situação true or false
+	//Buscar por JPQL
+	public void buscarTarefas() {
+		EntityManager entityManager = JpaUtil.getEntityManager();
 
-		List<Tarefa> tarefasAndamento = buscarTodas().stream().filter(t -> t.getisConcluida() == false)
-				.filter(t -> t.getTitulo().contains(tarefa.getTitulo()))
-				.filter(t -> t.getDescricao().contains(tarefa.getTitulo()))
-				.filter(t -> t.getResponsavel().contains(tarefa.getResponsavel()))
-				// .filter(t -> t.getId().toString().contains(tarefa.getId().toString()))// ID
-				.collect(Collectors.toList());
+		Long idBusca = tarefa.getId();
+		
+		try {
 
-		return tarefasAndamento;
-	}
+			if (idBusca != null) {
+				
+				this.tarefas.add(buscarPorId(idBusca));
+				return;
+			}
+			
+			TarefaRepository tarefaRepo = new TarefaRepository(entityManager);
+			this.tarefas = tarefaRepo.buscarTodas().stream().filter(t -> t.getisConcluida() == tarefa.getisConcluida())
+					.filter(t -> t.getTitulo().contains(tarefa.getTitulo()))
+					.filter(t -> t.getDescricao().contains(tarefa.getTitulo()))
+					.filter(t -> t.getResponsavel().contains(tarefa.getResponsavel()))
+					.collect(Collectors.toList());
 
-	public List<Tarefa> buscarTodasConcluidas() {
-		List<Tarefa> tarefasConcluidas = buscarTodas().stream().filter(t -> t.getisConcluida())
-				.filter(t -> t.getTitulo().contains(tarefa.getTitulo()))
-				.filter(t -> t.getDescricao().contains(tarefa.getTitulo()))
-				.filter(t -> t.getResponsavel().contains(tarefa.getResponsavel()))
-				// .filter(t -> t.getId().toString().contains(tarefa.getId().toString()))// ID
-				.collect(Collectors.toList());
+		} catch (Exception e) {
+			throw (e);
+		} finally {
+			entityManager.close();
+		}
 
-		return tarefasConcluidas;
 	}
 
 	public Tarefa buscarPorId(Long id) {
-		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("TarefasPU");
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+		EntityManager entityManager = JpaUtil.getEntityManager();
 
 		try {
-			Tarefa tarefa = entityManager.find(Tarefa.class, id);
-			return tarefa;
+
+			TarefaRepository tarefaRepo = new TarefaRepository(entityManager);
+			return tarefaRepo.buscarId(id);
+
 		} catch (Exception e) {
-			throw new ExcecaoGenerica();
+			throw (e);
 		} finally {
 			entityManager.close();
-			entityManagerFactory.close();
 		}
 	}
 
 	public String salvar() {
-		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("TarefasPU");
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+		EntityManager entityManager = JpaUtil.getEntityManager();
 
 		try {
-			entityManager.getTransaction().begin();
-			entityManager.persist(tarefa);
-			entityManager.getTransaction().commit();
+
+			TarefaRepository tarefaRepo = new TarefaRepository(entityManager);
+			tarefaRepo.adicionar(tarefa);
 
 		} catch (Exception e) {
-			throw new ExcecaoGenerica();
+			throw (e);
 		} finally {
 			entityManager.close();
-			entityManagerFactory.close();
+
 		}
 
 		return "/consulta.xhtml?faces-redirect=true";
 	}
 
 	public String editar() {
-		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("TarefasPU");
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		EntityManager entityManager = JpaUtil.getEntityManager();
 
 		try {
-			entityManager.getTransaction().begin();
-			entityManager.merge(tarefa);
-			entityManager.getTransaction().commit();
+
+			TarefaRepository tarefaRepo = new TarefaRepository(entityManager);
+			tarefaRepo.atualizar(tarefa);
+
 		} catch (Exception e) {
-			throw new ExcecaoGenerica();
+			throw (e);
 		} finally {
 			entityManager.close();
-			entityManagerFactory.close();
 		}
 
 		tarefaId = null;
@@ -139,22 +137,19 @@ public class TarefaController {
 		return "/consulta.xhtml?faces-redirect=true";
 	}
 
+	//ARRUMAR!!!
 	public String concluir(Long id) {
-		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("TarefasPU");
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		EntityManager entityManager = JpaUtil.getEntityManager();
 
 		try {
-			Tarefa tarefa = entityManager.find(Tarefa.class, id);
 
-			entityManager.getTransaction().begin();
-			tarefa.setisConcluida(true);
-			entityManager.getTransaction().commit();
+			TarefaRepository tarefaRepo = new TarefaRepository(entityManager);
+			tarefaRepo.concluir(id);
 
 		} catch (Exception e) {
-			throw new ExcecaoGenerica();
+			throw (e);
 		} finally {
 			entityManager.close();
-			entityManagerFactory.close();
 
 		}
 
@@ -162,22 +157,17 @@ public class TarefaController {
 	}
 
 	public String excluir(Long id) {
-		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("TarefasPU");
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		EntityManager entityManager = JpaUtil.getEntityManager();
 
 		try {
-			Tarefa tarefa = entityManager.find(Tarefa.class, id);
 
-			entityManager.getTransaction().begin();
-			entityManager.remove(tarefa);
-			entityManager.getTransaction().commit();
+			TarefaRepository tarefaRepo = new TarefaRepository(entityManager);
+			tarefaRepo.apagar(id);
 
 		} catch (Exception e) {
-			throw new ExcecaoGenerica();
+			throw (e);
 		} finally {
 			entityManager.close();
-			entityManagerFactory.close();
-
 		}
 
 		return "/consulta.xhtml?faces-redirect=true";

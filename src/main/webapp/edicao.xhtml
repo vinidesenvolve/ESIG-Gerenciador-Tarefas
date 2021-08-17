@@ -22,11 +22,7 @@
 	<br />
 	<div class="formulario center">
 		<h:form id="form">
-			<h:panelGrid columns="2" cellpadding="10">
-				<f:facet name="header">
-					<h2>Cadastro</h2>
-				</f:facet>
-
+			<h:panelGrid>
 				<p:outputLabel value="Título" />
 				<p:inputText value="#{tarefaController.tarefa.titulo}" />
 
@@ -36,27 +32,28 @@
 				<p:outputLabel value="Responsável" />
 				<p:inputText value="#{tarefaController.tarefa.responsavel}" />
 
-				<p:outputLabel for="@next" value="Prioridade" />
-				<p:selectOneMenu id="option"
-					value="#{tarefaController.tarefa.prioridade}" style="width: 84%">
-					<f:selectItem itemLabel="Alta" itemValue="Alta" />
-					<f:selectItem itemLabel="Média" itemValue="Média" />
-					<f:selectItem itemLabel="Baixa" itemValue="Baixa" />
-				</p:selectOneMenu>
+				<div class="ui-fluid p-formgrid p-grid">
+					<div class="p-field p-col-12 p-md-4">
+						<p:outputLabel for="@next" value="Prioridade" />
+						<p:selectOneMenu id="option"
+							value="#{tarefaController.tarefa.prioridade}">
+							<f:selectItem itemLabel="Alta" itemValue="Alta" />
+							<f:selectItem itemLabel="Média" itemValue="Média" />
+							<f:selectItem itemLabel="Baixa" itemValue="Baixa" />
+						</p:selectOneMenu>
+					</div>
+				</div>
 
 				<p:outputLabel value="Deadline" />
 				<p:calendar value="#{tarefaController.tarefa.deadline}"
 					pattern="dd/MM/yyyy" timeZone="America/Brasilia" />
+				<br />
+				<h:panelGroup styleClass="center">
+					<p:commandButton id="btn-salvar" value="Salvar"
+						action="#{tarefaController.editar}" />
+				</h:panelGroup>
 
-			</h:panelGrid>
-
-			<h:panelGrid styleClass="center" columns="2" cellpadding="5">
-
-				<h:outputText />
-				<h:outputText />
-				<p:commandButton id="btn-voltar" value="Voltar" action="consulta" />
-				<p:commandButton id="btn-salvar" value="Cadastrar"
-					action="#{tarefaController.salvar}" />
+				<input type="hidden" name="tarefaId" value='#{param.tarefaId}' />
 
 			</h:panelGrid>
 		</h:form>
