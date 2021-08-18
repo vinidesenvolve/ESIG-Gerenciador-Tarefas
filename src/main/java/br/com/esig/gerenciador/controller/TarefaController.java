@@ -58,7 +58,6 @@ public class TarefaController {
 	}
 
 	//Pesquisar por descrição
-	//Pesquisar por id adding
 	//Bugs depois da pesquisa para usar excluir e concluir, está enviando id de outra tarefa
 	
 	public void buscarTarefas() {
@@ -69,7 +68,8 @@ public class TarefaController {
 		try {
 
 			if (idBusca != null) {
-				this.tarefas.add(buscarPorId(idBusca));//AQUI Get result only
+				this.tarefas.clear();
+				this.tarefas.add(buscarPorId(idBusca));
 				return;
 			}
 			
