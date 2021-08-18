@@ -24,6 +24,8 @@ public class TarefaController {
 
 	private Long tarefaId;
 
+	private String situacaoBusca;
+
 	private List<Tarefa> tarefas = new ArrayList<>();
 
 	@PostConstruct
@@ -55,10 +57,9 @@ public class TarefaController {
 
 	}
 
-	//Pesquisar todas / situação true or false
 	//Pesquisar por descrição
 	//Pesquisar por id adding
-	//Bugs depois da pesquisa para usar excluir e concluir
+	//Bugs depois da pesquisa para usar excluir e concluir, está enviando id de outra tarefa
 	
 	public void buscarTarefas() {
 		EntityManager entityManager = JpaUtil.getEntityManager();
@@ -68,9 +69,19 @@ public class TarefaController {
 		try {
 
 			if (idBusca != null) {
-				
-				this.tarefas.add(buscarPorId(idBusca));
+				this.tarefas.add(buscarPorId(idBusca));//AQUI Get result only
 				return;
+			}
+			
+			if(situacaoBusca.equals("todas")) {
+				buscarTodas();
+				return;
+			}
+			
+			if(situacaoBusca.equals("concluida")) {
+				tarefa.setisConcluida(true);
+			}else {
+				tarefa.setisConcluida(false);
 			}
 			
 			TarefaRepository tarefaRepo = new TarefaRepository(entityManager);
@@ -120,7 +131,7 @@ public class TarefaController {
 
 		}
 
-		return "/consulta.xhtml?faces-redirect=true";
+		return "/cadastro.xhtml?faces-redirect=true";
 	}
 
 	public String editar() {
@@ -139,16 +150,16 @@ public class TarefaController {
 
 		tarefaId = null;
 
-		return "/consulta.xhtml?faces-redirect=true";
+		return reloadConsulta();//"/consulta.xhtml?faces-redirect=true";
 	}
 
 	public void concluir(Long id) {
 		EntityManager entityManager = JpaUtil.getEntityManager();
 
 		try {
-			
-			TarefaRepository tarefaRepo = new TarefaRepository(entityManager);
-			tarefaRepo.concluir(id);
+			System.out.println(id);
+//			TarefaRepository tarefaRepo = new TarefaRepository(entityManager);
+//			tarefaRepo.concluir(id);
 
 		} catch (Exception e) {
 			throw (e);
@@ -157,16 +168,16 @@ public class TarefaController {
 
 		}
 
-		//return "/consulta.xhtml?faces-redirect=true";
+		//return reloadConsulta();//"/consulta.xhtml?faces-redirect=true";
 	}
 
 	public String excluir(Long id) {
 		EntityManager entityManager = JpaUtil.getEntityManager();
 
 		try {
-			
-			TarefaRepository tarefaRepo = new TarefaRepository(entityManager);
-			tarefaRepo.apagar(id);
+			System.out.println(id);
+//			TarefaRepository tarefaRepo = new TarefaRepository(entityManager);
+//			tarefaRepo.apagar(id);
 
 		} catch (Exception e) {
 			throw (e);
@@ -174,9 +185,12 @@ public class TarefaController {
 			entityManager.close();
 		}
 
-		return "/consulta.xhtml?faces-redirect=true";
+		return reloadConsulta();//"/consulta.xhtml?faces-redirect=true";
 	}
 
+	public String reloadConsulta() {
+		return "/consulta.xhtml?faces-redirect=true";
+	}
 	// GETTERS & SETTERS
 	public Tarefa getTarefa() {
 		return tarefa;
@@ -185,7 +199,14 @@ public class TarefaController {
 	public void setTarefa(Tarefa tarefa) {
 		this.tarefa = tarefa;
 	}
+	
+	public String getSituacaoBusca() {
+		return situacaoBusca;
+	}
 
+	public void setSituacaoBusca(String situacaoBusca) {
+		this.situacaoBusca = situacaoBusca;
+	}
 	public List<Tarefa> getTarefas() {
 		return tarefas;
 	}

@@ -20,10 +20,14 @@
 				action="consulta.xhtml" />
 		</p:menubar>
 	</h:form>
-	<br />
-	<div>
+
+	<div class="formulario center">
 		<h:form id="form">
-			<h:panelGrid styleClass="center">
+			<h:panelGrid columns="2" cellpadding="10">
+				<f:facet name="header">
+					<h2>Consulta</h2>
+				</f:facet>
+
 				<p:outputLabel value="Número" />
 				<p:inputText value="#{tarefaController.tarefa.id}" />
 
@@ -33,22 +37,21 @@
 				<p:outputLabel value="Responsável" />
 				<p:inputText value="#{tarefaController.tarefa.responsavel}" />
 
-				<div class="ui-fluid p-formgrid p-grid">
-					<div class="p-field p-col-12 p-md-4">
-						<p:outputLabel for="@next" value="Situação" />
-						<p:selectOneMenu id="option"
-							value="#{tarefaController.tarefa.isConcluida}">
-							<f:selectItem itemLabel="Em andamento" itemValue="False" />
-							<f:selectItem itemLabel="Concluída" itemValue="True" />
-							<!--<f:selectItem itemLabel="Todas" itemValue="null" />-->
-						</p:selectOneMenu>
-					</div>
-				</div>
-				<br />
-				<h:panelGroup styleClass="center">
-					<p:commandButton id="btn-buscar" value="Buscar Tarefas"
-						action="#{tarefaController.buscarTarefas}" update="table" />
-				</h:panelGroup>
+				<p:outputLabel for="@next" value="Situação" />
+				<p:selectOneMenu id="option"
+					value="#{tarefaController.situacaoBusca}" style="width: 84%">
+					<f:selectItem itemLabel="Todas" itemValue="todas" />
+					<f:selectItem itemLabel="Em andamento" itemValue="andamento" />
+					<f:selectItem itemLabel="Concluída" itemValue="concluida" />
+				</p:selectOneMenu>
+			</h:panelGrid>
+
+			<h:panelGrid styleClass="center" columns="2" cellpadding="5">
+
+				<h:outputText />
+				<h:outputText />
+				<p:commandButton id="btn-buscar" value="Buscar Tarefas"
+					action="#{tarefaController.buscarTarefas}" update="table" />
 			</h:panelGrid>
 		</h:form>
 	</div>
@@ -71,7 +74,7 @@
 				</p:column>
 
 				<p:column headerText="Ações">
-					<h:form styleClass="center">
+					<h:form id="acoes" styleClass="center">
 
 						<h:link value="Editar" outcome="edicao.xhtml">
 							<f:param name="tarefaId" value="#{tarefa.id}" />
@@ -86,7 +89,8 @@
 
 						<h:outputText value=" | " />
 
-						<p:commandLink action="#{tarefaController.concluir(tarefa.id)}">
+						<p:commandLink update="@this" ajax="false"
+							action="#{tarefaController.concluir(tarefa.id)}">
 							<h:outputText value="Concluir" />
 						</p:commandLink>
 					</h:form>
