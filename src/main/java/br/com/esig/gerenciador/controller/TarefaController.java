@@ -57,9 +57,6 @@ public class TarefaController {
 
 	}
 
-	//Pesquisar por descrição
-	//Bugs depois da pesquisa para usar excluir e concluir, está enviando id de outra tarefa
-	
 	public void buscarTarefas() {
 		EntityManager entityManager = JpaUtil.getEntityManager();
 
