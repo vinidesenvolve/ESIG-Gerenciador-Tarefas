@@ -28,6 +28,8 @@ public class TarefaController {
 
 	@PostConstruct
 	public void postConstruct() {
+		buscarTodas();
+		
 		String tarefaIdParam = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
 				.get("tarefaId");
 
@@ -53,8 +55,11 @@ public class TarefaController {
 
 	}
 
-	//Pesquisar todas situação true or false
-	//Buscar por JPQL
+	//Pesquisar todas / situação true or false
+	//Pesquisar por descrição
+	//Pesquisar por id adding
+	//Bugs depois da pesquisa para usar excluir e concluir
+	
 	public void buscarTarefas() {
 		EntityManager entityManager = JpaUtil.getEntityManager();
 
@@ -69,9 +74,10 @@ public class TarefaController {
 			}
 			
 			TarefaRepository tarefaRepo = new TarefaRepository(entityManager);
-			this.tarefas = tarefaRepo.buscarTodas().stream().filter(t -> t.getisConcluida() == tarefa.getisConcluida())
+			this.tarefas = tarefaRepo.buscarTodas().stream()
+					.filter(t -> t.getisConcluida() == tarefa.getisConcluida())
 					.filter(t -> t.getTitulo().contains(tarefa.getTitulo()))
-					.filter(t -> t.getDescricao().contains(tarefa.getTitulo()))
+					//.filter(t -> t.getDescricao().contains(tarefa.getTitulo()))
 					.filter(t -> t.getResponsavel().contains(tarefa.getResponsavel()))
 					.collect(Collectors.toList());
 
@@ -84,7 +90,6 @@ public class TarefaController {
 	}
 
 	public Tarefa buscarPorId(Long id) {
-
 		EntityManager entityManager = JpaUtil.getEntityManager();
 
 		try {
@@ -137,12 +142,11 @@ public class TarefaController {
 		return "/consulta.xhtml?faces-redirect=true";
 	}
 
-	//ARRUMAR!!!
-	public String concluir(Long id) {
+	public void concluir(Long id) {
 		EntityManager entityManager = JpaUtil.getEntityManager();
 
 		try {
-
+			
 			TarefaRepository tarefaRepo = new TarefaRepository(entityManager);
 			tarefaRepo.concluir(id);
 
@@ -153,14 +157,14 @@ public class TarefaController {
 
 		}
 
-		return "/consulta.xhtml?faces-redirect=true";
+		//return "/consulta.xhtml?faces-redirect=true";
 	}
 
 	public String excluir(Long id) {
 		EntityManager entityManager = JpaUtil.getEntityManager();
 
 		try {
-
+			
 			TarefaRepository tarefaRepo = new TarefaRepository(entityManager);
 			tarefaRepo.apagar(id);
 

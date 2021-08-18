@@ -1,7 +1,6 @@
 package br.com.esig.gerenciador.repository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 
@@ -15,6 +14,7 @@ public class TarefaRepository {
 		this.entityManager = em;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Tarefa> buscarTodas() {
 
 		List<Tarefa> tarefas = entityManager.createQuery("select t from Tarefa as t").getResultList();
@@ -56,6 +56,7 @@ public class TarefaRepository {
 
 		entityManager.getTransaction().begin();
 		tarefa.setisConcluida(true);
+		entityManager.merge(tarefa);
 		entityManager.getTransaction().commit();
 	}
 }

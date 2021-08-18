@@ -11,7 +11,6 @@
 </h:head>
 
 <h:body>
-
 	<h:form>
 		<p:menubar>
 			<p:menuitem value="Cadastro" icon="ui-icon-document"
@@ -20,6 +19,7 @@
 				action="consulta.xhtml" />
 		</p:menubar>
 	</h:form>
+	
 	<br />
 	<div>
 		<h:form id="form">
@@ -40,14 +40,13 @@
 							value="#{tarefaController.tarefa.isConcluida}">
 							<f:selectItem itemLabel="Em andamento" itemValue="False" />
 							<f:selectItem itemLabel="Concluída" itemValue="True" />
-							<!--<f:selectItem itemLabel="Todas" itemValue="null" />-->
 						</p:selectOneMenu>
 					</div>
 				</div>
 				<br />
 				<h:panelGroup styleClass="center">
 					<p:commandButton id="btn-buscar" value="Buscar Tarefas"
-						action="#{tarefaController.buscarTarefas}" update="table" />
+						action="#{tarefaController.buscarTarefas}" />
 				</h:panelGroup>
 			</h:panelGrid>
 		</h:form>
@@ -70,17 +69,16 @@
 					<h:outputText styleClass="center" value="#{tarefa.responsavel}" />
 				</p:column>
 
+
 				<p:column headerText="Ações">
 					<h:form styleClass="center">
-
 						<h:link value="Editar" outcome="edicao.xhtml">
 							<f:param name="tarefaId" value="#{tarefa.id}" />
 						</h:link>
 
 						<h:outputText value=" | " />
 
-						<p:commandLink action="#{tarefaController.excluir(tarefa.id)}"
-							process="@this" ajax="false">
+						<p:commandLink action="#{tarefaController.excluir(tarefa.id)}">
 							<h:outputText value="Excluir" />
 						</p:commandLink>
 
