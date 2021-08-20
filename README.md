@@ -32,7 +32,7 @@ Em desenvolvimento
 - [x] Editar Tarefa
 - [x] Apagar Tarefa
 - [x] Concluir Tarefa
-- [ ] Pesquisar Tarefa
+- [x] Pesquisar Tarefa
 
 ## Requisitos
 
