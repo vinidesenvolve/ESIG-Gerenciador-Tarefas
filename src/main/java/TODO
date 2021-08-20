@@ -1,0 +1,22 @@
+Lista de Bugs e Requisitos 
+
+- Bugs depois da pesquisa para usar excluir e concluir
+	*Link está enviando id de outra tarefa que estava na mesma posição no dataTable
+	
+- ENUM prioridade 
+
+- Tirar elemento concluir de tarefas concluidas
+
+- Pesquisar por descrição
+
+- Mensagens e campos obrigatórios
+
+- Tratamento de exceções
+
+- Testes JUnit
+
+- Subir na nuvem
+
+- BD com docker
+
+- Melhorar design 

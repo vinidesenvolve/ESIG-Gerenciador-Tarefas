@@ -85,7 +85,7 @@ public class TarefaController {
 			this.tarefas = tarefaRepo.buscarTodas().stream()
 					.filter(t -> t.getisConcluida() == tarefa.getisConcluida())
 					.filter(t -> t.getTitulo().contains(tarefa.getTitulo()))
-					//.filter(t -> t.getDescricao().contains(tarefa.getTitulo()))
+					.filter(t -> t.getDescricao().contains(tarefa.getTitulo()))
 					.filter(t -> t.getResponsavel().contains(tarefa.getResponsavel()))
 					.collect(Collectors.toList());
 

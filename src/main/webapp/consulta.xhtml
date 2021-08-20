@@ -1,31 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition template="WEB-INF/template/layout.html"
+	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
-	xmlns:p="http://primefaces.org/ui">
-<h:head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<h:outputStylesheet library="css" name="styles.css"></h:outputStylesheet>
-	<title>ESIG - Gerenciador de Tarefas</title>
-</h:head>
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
-<h:body>
+	<ui:define name="titulo"> Listagem de Tarefas - ESIG </ui:define>
 
-	<h:form>
-		<p:menubar>
-			<p:menuitem value="Cadastro" icon="ui-icon-document"
-				action="cadastro.xhtml" />
-			<p:menuitem value="Consulta" icon="ui-icon-document"
-				action="consulta.xhtml" />
-		</p:menubar>
-	</h:form>
-
-	<div class="formulario center">
-		<h:form id="form">
+	<ui:define name="corpo">
+		<h:form id="formBusca" styleClass="center">
 			<h:panelGrid columns="2" cellpadding="10">
 				<f:facet name="header">
-					<h2>Consulta</h2>
+					<p:outputLabel value="Listagem de Tarefas" style="float:left;" />
 				</f:facet>
 
 				<p:outputLabel value="Número" />
@@ -39,65 +27,57 @@
 
 				<p:outputLabel for="@next" value="Situação" />
 				<p:selectOneMenu id="option"
-					value="#{tarefaController.situacaoBusca}" style="width: 84%">
+					value="#{tarefaController.situacaoBusca}" style="width: 60%">
 					<f:selectItem itemLabel="Todas" itemValue="todas" />
 					<f:selectItem itemLabel="Em andamento" itemValue="andamento" />
 					<f:selectItem itemLabel="Concluída" itemValue="concluida" />
 				</p:selectOneMenu>
-			</h:panelGrid>
 
-			<h:panelGrid styleClass="center" columns="2" cellpadding="5">
-
-				<h:outputText />
-				<h:outputText />
+				<p:outputLabel />
 				<p:commandButton id="btn-buscar" value="Buscar Tarefas"
 					action="#{tarefaController.buscarTarefas}" update="table" />
+
 			</h:panelGrid>
 		</h:form>
-	</div>
-	<br />
-	<div>
-		<h:panelGroup styleClass="center">
-			<p:dataTable value="#{tarefaController.tarefas}" var="tarefa"
-				border="1" id="table" paginator="true" rows="5">
 
-				<p:column headerText="Número">
-					<h:outputText styleClass="center" value="#{tarefa.id}" />
-				</p:column>
+		<p:dataTable value="#{tarefaController.tarefas}" var="tarefa"
+			border="1" id="table" paginator="true" rows="5">
 
-				<p:column headerText="Título">
-					<h:outputText styleClass="center" value="#{tarefa.titulo}" />
-				</p:column>
+			<p:column headerText="Número">
+				<h:outputText styleClass="center" value="#{tarefa.id}" />
+			</p:column>
 
-				<p:column headerText="Responsável">
-					<h:outputText styleClass="center" value="#{tarefa.responsavel}" />
-				</p:column>
+			<p:column headerText="Título">
+				<h:outputText styleClass="center" value="#{tarefa.titulo}" />
+			</p:column>
 
-				<p:column headerText="Ações">
-					<h:form id="acoes" styleClass="center">
+			<p:column headerText="Responsável">
+				<h:outputText styleClass="center" value="#{tarefa.responsavel}" />
+			</p:column>
 
-						<h:link value="Editar" outcome="edicao.xhtml">
-							<f:param name="tarefaId" value="#{tarefa.id}" />
-						</h:link>
+			<p:column headerText="Ações">
+				<h:form id="acoes" styleClass="center">
 
-						<h:outputText value=" | " />
+					<h:link value="Editar" outcome="edicao.xhtml">
+						<f:param name="tarefaId" value="#{tarefa.id}" />
+					</h:link>
 
-						<p:commandLink action="#{tarefaController.excluir(tarefa.id)}"
-							process="@this" ajax="false">
-							<h:outputText value="Excluir" />
-						</p:commandLink>
+					<h:outputText value=" | " />
 
-						<h:outputText value=" | " />
+					<p:commandLink action="#{tarefaController.excluir(tarefa.id)}"
+						process="@this" ajax="false">
+						<h:outputText value="Excluir" />
+					</p:commandLink>
 
-						<p:commandLink update="@this" ajax="false"
-							action="#{tarefaController.concluir(tarefa.id)}">
-							<h:outputText value="Concluir" />
-						</p:commandLink>
-					</h:form>
-				</p:column>
+					<h:outputText value=" | " />
 
-			</p:dataTable>
-		</h:panelGroup>
-	</div>
-</h:body>
-</html>
+					<p:commandLink update="@this" ajax="false"
+						action="#{tarefaController.concluir(tarefa.id)}">
+						<h:outputText value="Concluir" />
+					</p:commandLink>
+				</h:form>
+			</p:column>
+		</p:dataTable>
+	</ui:define>
+</ui:composition>
+

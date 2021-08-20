@@ -1,30 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition template="WEB-INF/template/layout.html"
+	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
-	xmlns:p="http://primefaces.org/ui">
-<h:head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<h:outputStylesheet library="css" name="styles.css"></h:outputStylesheet>
-	<title>ESIG - Gerenciador de Tarefas</title>
-</h:head>
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
-<h:body>
-	<h:form>
-		<p:menubar>
-			<p:menuitem value="Cadastro" icon="ui-icon-document"
-				action="cadastro.xhtml" />
-			<p:menuitem value="Consulta" icon="ui-icon-document"
-				action="consulta.xhtml" />
-		</p:menubar>
-	</h:form>
+	<ui:define name="titulo"> Cadastro de Tarefa - ESIG </ui:define>
 
-	<div class="formulario center">
-		<h:form id="form">
+	<ui:define name="corpo">
+		<h:form id="formCadastro" styleClass="center">
 			<h:panelGrid columns="2" cellpadding="10">
 				<f:facet name="header">
-					<h2>Cadastro</h2>
+					<p:outputLabel value="Cadastro de Tarefa" style="float:left;"/>
 				</f:facet>
 
 				<p:outputLabel value="Título" />
@@ -48,18 +37,10 @@
 				<p:calendar value="#{tarefaController.tarefa.deadline}"
 					pattern="dd/MM/yyyy" timeZone="America/Brasilia" />
 
-			</h:panelGrid>
-
-			<h:panelGrid styleClass="center" columns="2" cellpadding="5">
-
-				<h:outputText />
-				<h:outputText />
 				<p:commandButton id="btn-voltar" value="Voltar" action="consulta" />
 				<p:commandButton id="btn-salvar" value="Cadastrar"
 					action="#{tarefaController.salvar}" />
-
 			</h:panelGrid>
 		</h:form>
-	</div>
-</h:body>
-</html>
+	</ui:define>
+</ui:composition>
