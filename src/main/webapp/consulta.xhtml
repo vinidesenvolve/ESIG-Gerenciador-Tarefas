@@ -64,16 +64,16 @@
 
 					<h:outputText value=" | " />
 
-					<p:commandLink action="#{tarefaController.excluir(tarefa.id)}"
-						process="@this" ajax="false">
-						<h:outputText value="Excluir" />
+					<p:commandLink value="Excluir"
+						action="#{tarefaController.excluir()}">
+						<f:param name="tarefaId" value="#{tarefa.id}" />
 					</p:commandLink>
 
 					<h:outputText value=" | " />
 
-					<p:commandLink update="@this" ajax="false"
-						action="#{tarefaController.concluir(tarefa.id)}">
-						<h:outputText value="Concluir" />
+					<p:commandLink value="Concluir"
+						action="#{tarefaController.concluir()}">
+						<f:param name="tarefaId" value="#{tarefa.id}" />
 					</p:commandLink>
 				</h:form>
 			</p:column>

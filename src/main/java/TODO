@@ -7,8 +7,6 @@ Lista de Bugs e Requisitos
 
 - Tirar elemento concluir de tarefas concluidas
 
-- Pesquisar por descrição
-
 - Mensagens e campos obrigatórios
 
 - Tratamento de exceções
@@ -19,4 +17,4 @@ Lista de Bugs e Requisitos
 
 - BD com docker
 
-- Melhorar design 
+- Melhorar design ?

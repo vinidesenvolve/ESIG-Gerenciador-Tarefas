@@ -32,8 +32,9 @@ public class TarefaController {
 
 	@PostConstruct
 	public void postConstruct() {
+		
 		loadTarefas();
-
+		
 		String tarefaIdParam = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
 				.get("tarefaId");
 
@@ -59,26 +60,6 @@ public class TarefaController {
 
 	}
 	
-	public List<Tarefa> buscarTodas() {
-		EntityManager entityManager = JpaUtil.getEntityManager();
-
-		try {
-
-			TarefaRepository tarefaRepo = new TarefaRepository(entityManager);
-			return tarefaRepo.buscarTodas().stream()
-					.filter(t -> StringUtils.containsIgnoreCase(t.getResponsavel(), tarefa.getResponsavel()))
-					.filter(t -> StringUtils.containsIgnoreCase(t.getTitulo(), tarefa.getTitulo()))
-					.filter(t -> StringUtils.containsIgnoreCase(t.getDescricao(), tarefa.getTitulo()))
-					.collect(Collectors.toList());
-
-		} catch (Exception e) {
-			throw (e);
-		} finally {
-			entityManager.close();
-		}
-
-	}
-
 	public void buscarTarefas() {
 		EntityManager entityManager = JpaUtil.getEntityManager();
 
@@ -107,6 +88,26 @@ public class TarefaController {
 			}
 
 			this.tarefas = buscarTodas();
+
+		} catch (Exception e) {
+			throw (e);
+		} finally {
+			entityManager.close();
+		}
+
+	}
+	
+	public List<Tarefa> buscarTodas() {
+		EntityManager entityManager = JpaUtil.getEntityManager();
+
+		try {
+
+			TarefaRepository tarefaRepo = new TarefaRepository(entityManager);
+			return tarefaRepo.buscarTodas().stream()
+					.filter(t -> StringUtils.containsIgnoreCase(t.getResponsavel(), tarefa.getResponsavel()))
+					.filter(t -> StringUtils.containsIgnoreCase(t.getTitulo(), tarefa.getTitulo()))
+					.filter(t -> StringUtils.containsIgnoreCase(t.getDescricao(), tarefa.getTitulo()))
+					.collect(Collectors.toList());
 
 		} catch (Exception e) {
 			throw (e);
@@ -147,7 +148,7 @@ public class TarefaController {
 
 		}
 
-		return "/cadastro.xhtml?faces-redirect=true";
+		return reloadConsulta();
 	}
 
 	public String editar() {
@@ -166,16 +167,16 @@ public class TarefaController {
 
 		tarefaId = null;
 
-		return reloadConsulta();// "/consulta.xhtml?faces-redirect=true";
+		return reloadConsulta();
 	}
 
-	public void concluir(Long id) {
+	
+	public String concluir() {
 		EntityManager entityManager = JpaUtil.getEntityManager();
 
 		try {
-			System.out.println(id);
-//			TarefaRepository tarefaRepo = new TarefaRepository(entityManager);
-//			tarefaRepo.concluir(id);
+			TarefaRepository tarefaRepo = new TarefaRepository(entityManager);
+			tarefaRepo.concluir(tarefa.getId());
 
 		} catch (Exception e) {
 			throw (e);
@@ -184,16 +185,15 @@ public class TarefaController {
 
 		}
 
-		// return reloadConsulta();//"/consulta.xhtml?faces-redirect=true";
+		return reloadConsulta();//Tirar link consulta
 	}
 
-	public String excluir(Long id) {
+	public String excluir() {
 		EntityManager entityManager = JpaUtil.getEntityManager();
 
 		try {
-			System.out.println(id);
-//			TarefaRepository tarefaRepo = new TarefaRepository(entityManager);
-//			tarefaRepo.apagar(id);
+			TarefaRepository tarefaRepo = new TarefaRepository(entityManager);
+			tarefaRepo.apagar(tarefa.getId());
 
 		} catch (Exception e) {
 			throw (e);
@@ -201,7 +201,7 @@ public class TarefaController {
 			entityManager.close();
 		}
 
-		return reloadConsulta();// "/consulta.xhtml?faces-redirect=true";
+		return reloadConsulta();
 	}
 
 	public String reloadConsulta() {
