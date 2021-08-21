@@ -15,6 +15,8 @@ import br.com.esig.gerenciador.model.Tarefa;
 import br.com.esig.gerenciador.repository.TarefaRepository;
 import br.com.esig.gerenciador.util.JpaUtil;
 
+import org.apache.commons.lang3.StringUtils;
+
 @Named(value = "tarefaController")
 @RequestScoped
 public class TarefaController {
@@ -30,8 +32,8 @@ public class TarefaController {
 
 	@PostConstruct
 	public void postConstruct() {
-		buscarTodas();
-		
+		loadTarefas();
+
 		String tarefaIdParam = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
 				.get("tarefaId");
 
@@ -41,7 +43,7 @@ public class TarefaController {
 		}
 	}
 
-	public void buscarTodas() {
+	public void loadTarefas() {
 		EntityManager entityManager = JpaUtil.getEntityManager();
 
 		try {
@@ -56,12 +58,32 @@ public class TarefaController {
 		}
 
 	}
+	
+	public List<Tarefa> buscarTodas() {
+		EntityManager entityManager = JpaUtil.getEntityManager();
+
+		try {
+
+			TarefaRepository tarefaRepo = new TarefaRepository(entityManager);
+			return tarefaRepo.buscarTodas().stream()
+					.filter(t -> StringUtils.containsIgnoreCase(t.getResponsavel(), tarefa.getResponsavel()))
+					.filter(t -> StringUtils.containsIgnoreCase(t.getTitulo(), tarefa.getTitulo()))
+					.filter(t -> StringUtils.containsIgnoreCase(t.getDescricao(), tarefa.getTitulo()))
+					.collect(Collectors.toList());
+
+		} catch (Exception e) {
+			throw (e);
+		} finally {
+			entityManager.close();
+		}
+
+	}
 
 	public void buscarTarefas() {
 		EntityManager entityManager = JpaUtil.getEntityManager();
 
 		Long idBusca = tarefa.getId();
-		
+
 		try {
 
 			if (idBusca != null) {
@@ -69,25 +91,22 @@ public class TarefaController {
 				this.tarefas.add(buscarPorId(idBusca));
 				return;
 			}
+
+			if (situacaoBusca.equals("concluida")) {
+				this.tarefas = buscarTodas().stream()
+					.filter(t -> t.getisConcluida())
+					.collect(Collectors.toList());;
+				return;
+			} 
 			
-			if(situacaoBusca.equals("todas")) {
-				buscarTodas();
+			if (situacaoBusca.equals("andamento")){
+				this.tarefas = buscarTodas().stream()
+						.filter(t -> !t.getisConcluida())
+						.collect(Collectors.toList());
 				return;
 			}
-			
-			if(situacaoBusca.equals("concluida")) {
-				tarefa.setisConcluida(true);
-			}else {
-				tarefa.setisConcluida(false);
-			}
-			
-			TarefaRepository tarefaRepo = new TarefaRepository(entityManager);
-			this.tarefas = tarefaRepo.buscarTodas().stream()
-					.filter(t -> t.getisConcluida() == tarefa.getisConcluida())
-					.filter(t -> t.getTitulo().contains(tarefa.getTitulo()))
-					.filter(t -> t.getDescricao().contains(tarefa.getTitulo()))
-					.filter(t -> t.getResponsavel().contains(tarefa.getResponsavel()))
-					.collect(Collectors.toList());
+
+			this.tarefas = buscarTodas();
 
 		} catch (Exception e) {
 			throw (e);
@@ -147,7 +166,7 @@ public class TarefaController {
 
 		tarefaId = null;
 
-		return reloadConsulta();//"/consulta.xhtml?faces-redirect=true";
+		return reloadConsulta();// "/consulta.xhtml?faces-redirect=true";
 	}
 
 	public void concluir(Long id) {
@@ -165,7 +184,7 @@ public class TarefaController {
 
 		}
 
-		//return reloadConsulta();//"/consulta.xhtml?faces-redirect=true";
+		// return reloadConsulta();//"/consulta.xhtml?faces-redirect=true";
 	}
 
 	public String excluir(Long id) {
@@ -182,12 +201,13 @@ public class TarefaController {
 			entityManager.close();
 		}
 
-		return reloadConsulta();//"/consulta.xhtml?faces-redirect=true";
+		return reloadConsulta();// "/consulta.xhtml?faces-redirect=true";
 	}
 
 	public String reloadConsulta() {
 		return "/consulta.xhtml?faces-redirect=true";
 	}
+
 	// GETTERS & SETTERS
 	public Tarefa getTarefa() {
 		return tarefa;
@@ -196,7 +216,7 @@ public class TarefaController {
 	public void setTarefa(Tarefa tarefa) {
 		this.tarefa = tarefa;
 	}
-	
+
 	public String getSituacaoBusca() {
 		return situacaoBusca;
 	}
@@ -204,6 +224,7 @@ public class TarefaController {
 	public void setSituacaoBusca(String situacaoBusca) {
 		this.situacaoBusca = situacaoBusca;
 	}
+
 	public List<Tarefa> getTarefas() {
 		return tarefas;
 	}
