@@ -11,19 +11,23 @@
 
 	<ui:define name="corpo">
 		<h:form id="formCadastro" styleClass="center">
+			<p:messages showDetail="false" showSummary="true" autoUpdate="true" />
 			<h:panelGrid columns="2" cellpadding="10">
 				<f:facet name="header">
-					<p:outputLabel value="Cadastro de Tarefa" style="float:left;"/>
+					<p:outputLabel value="Cadastro de Tarefa" style="float:left;" />
 				</f:facet>
 
 				<p:outputLabel value="Título" />
-				<p:inputText value="#{tarefaController.tarefa.titulo}" />
+				<p:inputText value="#{tarefaController.tarefa.titulo}"
+					required="true" requiredMessage="Informe o título." />
 
 				<p:outputLabel value="Descrição" />
-				<p:inputTextarea value="#{tarefaController.tarefa.descricao}" />
+				<p:inputTextarea value="#{tarefaController.tarefa.descricao}"
+					required="true" requiredMessage="Descreva a tarefa." />
 
 				<p:outputLabel value="Responsável" />
-				<p:inputText value="#{tarefaController.tarefa.responsavel}" />
+				<p:inputText value="#{tarefaController.tarefa.responsavel}"
+					required="true" requiredMessage="Informe o responsável." />
 
 				<p:outputLabel for="@next" value="Prioridade" />
 				<p:selectOneMenu id="option"
@@ -35,9 +39,9 @@
 
 				<p:outputLabel value="Deadline" />
 				<p:calendar value="#{tarefaController.tarefa.deadline}"
-					pattern="dd/MM/yyyy" timeZone="America/Brasilia" />
+					pattern="dd/MM/yyyy" timeZone="America/Brasilia" required="true"
+					requiredMessage="Selecione a data do prazo (deadline)." />
 
-				<p:commandButton id="btn-voltar" value="Voltar" action="consulta" />
 				<p:commandButton id="btn-salvar" value="Cadastrar"
 					action="#{tarefaController.salvar}" />
 			</h:panelGrid>
