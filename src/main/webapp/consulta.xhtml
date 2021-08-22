@@ -41,17 +41,18 @@
 		</h:form>
 
 		<p:dataTable value="#{tarefaController.tarefas}" var="tarefa"
-			border="1" id="table" paginator="true" rows="5">
+			border="1" id="table" paginator="true" rows="5" cellspacing="10"
+			cellpadding="20">
 
-			<p:column headerText="Número">
+			<p:column headerText="Número" sortBy="#{tarefa.id}">
 				<h:outputText styleClass="center" value="#{tarefa.id}" />
 			</p:column>
 
-			<p:column headerText="Título">
+			<p:column headerText="Título" sortBy="#{tarefa.titulo}">
 				<h:outputText styleClass="center" value="#{tarefa.titulo}" />
 			</p:column>
 
-			<p:column headerText="Responsável">
+			<p:column headerText="Responsável" sortBy="#{tarefa.responsavel}">
 				<h:outputText styleClass="center" value="#{tarefa.responsavel}" />
 			</p:column>
 
