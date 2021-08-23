@@ -1,13 +1,12 @@
 Lista de Bugs e Requisitos 
 
-- Bugs depois da pesquisa para usar excluir e concluir
-	*Link está enviando id de outra tarefa que estava na mesma posição no dataTable
-	
-- ENUM prioridade 
+- Bean validation?
 
 - Tirar elemento concluir de tarefas concluidas
 
-- Mensagens e campos obrigatórios
+- ENUM prioridade 
+
+- Dividir beans 
 
 - Tratamento de exceções
 

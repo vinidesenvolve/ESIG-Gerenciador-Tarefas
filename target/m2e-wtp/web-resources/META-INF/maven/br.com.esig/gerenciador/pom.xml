@@ -50,7 +50,6 @@
 			<version>5.3</version>
 		</dependency>
 
-
 		<!-- CDI -->
 		<dependency>
 			<groupId>javax.enterprise</groupId>
@@ -81,17 +80,17 @@
 			<version>5.4.2.Final</version>
 		</dependency>
 
+		<!-- Bean Validation -->
+		<dependency>
+			<groupId>org.hibernate.validator</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>7.0.1.Final</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>42.2.23</version>
-		</dependency>
-
-		<!-- PROVIDER JPA(HIBERNATE) ORIGINAL -->
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-			<version>4.3.0.Final</version>
 		</dependency>
 
 		<!-- usado pelo Weld -->
@@ -100,7 +99,7 @@
 			<artifactId>jandex</artifactId>
 			<version>1.2.2.Final</version>
 		</dependency>
-	
+
 		<!-- fetch param from url -->
 		<dependency>
 			<groupId>javax</groupId>
@@ -108,7 +107,7 @@
 			<version>6.0</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
 	</dependencies>
 	<build>
 		<finalName>gerenciador</finalName>

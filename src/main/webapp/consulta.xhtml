@@ -66,14 +66,14 @@
 					<h:outputText value=" | " />
 
 					<p:commandLink value="Excluir"
-						action="#{tarefaController.excluir()}">
+						action="#{manipulacaoTarefaBean.excluir()}">
 						<f:param name="tarefaId" value="#{tarefa.id}" />
 					</p:commandLink>
 
 					<h:outputText value=" | " />
 
 					<p:commandLink value="Concluir"
-						action="#{tarefaController.concluir()}">
+						action="#{manipulacaoTarefaBean.concluir()}">
 						<f:param name="tarefaId" value="#{tarefa.id}" />
 					</p:commandLink>
 				</h:form>

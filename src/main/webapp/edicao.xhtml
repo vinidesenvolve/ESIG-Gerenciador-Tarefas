@@ -19,32 +19,32 @@
 				</f:facet>
 
 				<p:outputLabel value="Título" />
-				<p:inputText value="#{tarefaController.tarefa.titulo}"
+				<p:inputText value="#{manipulacaoTarefaBean.tarefa.titulo}"
 					required="true" requiredMessage="Informe o título." />
 
 				<p:outputLabel value="Descrição" />
-				<p:inputTextarea value="#{tarefaController.tarefa.descricao}"
+				<p:inputTextarea value="#{manipulacaoTarefaBean.tarefa.descricao}"
 					required="true" requiredMessage="Descreva a tarefa." />
 
 				<p:outputLabel value="Responsável" />
-				<p:inputText value="#{tarefaController.tarefa.responsavel}"
+				<p:inputText value="#{manipulacaoTarefaBean.tarefa.responsavel}"
 					required="true" requiredMessage="Informe o responsável." />
 
 				<p:outputLabel for="@next" value="Prioridade" />
 				<p:selectOneMenu id="option"
-					value="#{tarefaController.tarefa.prioridade}" style="width: 84%">
+					value="#{manipulacaoTarefaBean.tarefa.prioridade}" style="width: 84%">
 					<f:selectItem itemLabel="Alta" itemValue="Alta" />
 					<f:selectItem itemLabel="Média" itemValue="Média" />
 					<f:selectItem itemLabel="Baixa" itemValue="Baixa" />
 				</p:selectOneMenu>
 
 				<p:outputLabel value="Deadline" />
-				<p:calendar value="#{tarefaController.tarefa.deadline}"
+				<p:calendar value="#{manipulacaoTarefaBean.tarefa.deadline}"
 					pattern="dd/MM/yyyy" timeZone="America/Brasilia" required="true"
 					requiredMessage="Selecione a data do prazo (deadline)." />
 
 				<p:commandButton id="btn-salvar" value="Salvar"
-					action="#{tarefaController.editar}" />
+					action="#{manipulacaoTarefaBean.editar}" />
 
 				<input type="hidden" name="tarefaId" value='#{param.tarefaId}' />
 			</h:panelGrid>
