@@ -132,45 +132,23 @@ public class TarefaController {
 		}
 	}
 
-	public String salvar() {
-
-		EntityManager entityManager = JpaUtil.getEntityManager();
-
-		try {
-
-			TarefaRepository tarefaRepo = new TarefaRepository(entityManager);
-			tarefaRepo.adicionar(tarefa);
-
-		} catch (Exception e) {
-			throw (e);
-		} finally {
-			entityManager.close();
-
-		}
-
-		return reloadConsulta();
-	}
-
-	public String editar() {
-		EntityManager entityManager = JpaUtil.getEntityManager();
-
-		try {
-
-			TarefaRepository tarefaRepo = new TarefaRepository(entityManager);
-			tarefaRepo.atualizar(tarefa);
-
-		} catch (Exception e) {
-			throw (e);
-		} finally {
-			entityManager.close();
-		}
-
-		tarefaId = null;
-
-		return reloadConsulta();
-	}
-
-	
+//	public String editar() {
+//		EntityManager entityManager = JpaUtil.getEntityManager();
+//
+//		try {
+//
+//			TarefaRepository tarefaRepo = new TarefaRepository(entityManager);
+//			tarefaRepo.atualizar(tarefa);
+//
+//		} catch (Exception e) {
+//			throw (e);
+//		} finally {
+//			entityManager.close();
+//		}
+//
+//		return loadConsulta();
+//	}
+//	
 	public String concluir() {
 		EntityManager entityManager = JpaUtil.getEntityManager();
 
@@ -185,7 +163,7 @@ public class TarefaController {
 
 		}
 
-		return reloadConsulta();//Tirar link consulta
+		return loadConsulta();
 	}
 
 	public String excluir() {
@@ -201,10 +179,11 @@ public class TarefaController {
 			entityManager.close();
 		}
 
-		return reloadConsulta();
+		return loadConsulta();
 	}
 
-	public String reloadConsulta() {
+	public String loadConsulta() {
+		tarefaId = null;
 		return "/consulta.xhtml?faces-redirect=true";
 	}
 

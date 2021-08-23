@@ -8,10 +8,11 @@ import javax.persistence.EntityManager;
 import br.com.esig.gerenciador.model.Tarefa;
 import br.com.esig.gerenciador.repository.TarefaRepository;
 import br.com.esig.gerenciador.util.JpaUtil;
+import br.com.esig.gerenciador.util.Navigation;
 
-@Named(value = "cadastrarTarefaBean")
+@Named(value = "cadastroTarefaBean")
 @RequestScoped
-public class CadastrarTarefaBean {
+public class CadastroTarefaBean {
 	
 	@Inject
 	private Tarefa tarefa;
@@ -32,7 +33,7 @@ public class CadastrarTarefaBean {
 
 		}
 
-		return "/consulta.xhtml?faces-redirect=true";
+		return Navigation.loadConsulta();
 	}
 
 	public Tarefa getTarefa() {

@@ -1,6 +1,7 @@
 package br.com.esig.gerenciador.model;
 
 import java.util.Date;
+import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,6 +11,10 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 @Entity
 @Table(name="tarefa")
 public class Tarefa {
@@ -18,12 +23,26 @@ public class Tarefa {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
+	@NotEmpty
+	@Size(min=5, max=20)
 	private String titulo;
-	private String descricao;
-	private String responsavel;
-	private String prioridade; //alta média baixa
-	private Boolean isConcluida = false; //Andamento || Concluida
 	
+	@NotEmpty
+	@Size(min=10)
+	private String descricao;
+	
+	@NotEmpty
+	@Size(min=5, max=20)
+	private String responsavel;
+	
+	private Boolean isConcluida = false;
+	
+
+	@NotEmpty
+	private String prioridade;
+	
+	
+	@NotNull
 	@Temporal(TemporalType.DATE)
 	private Date deadline;
 
@@ -83,4 +102,20 @@ public class Tarefa {
 		this.titulo = titulo;
 	}
 	
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Tarefa other = (Tarefa) obj;
+		return Objects.equals(id, other.id);
+	}
 }
