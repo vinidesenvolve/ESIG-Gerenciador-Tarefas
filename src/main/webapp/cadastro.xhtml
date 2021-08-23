@@ -10,16 +10,17 @@
 	<ui:define name="titulo"> Cadastro de Tarefa - ESIG </ui:define>
 
 	<ui:define name="corpo">
+		<p:messages showDetail="false" showSummary="true" autoUpdate="true" />
+		
 		<h:form id="formCadastro" styleClass="center">
-			<p:messages showDetail="false" showSummary="true" autoUpdate="true" />
 			<h:panelGrid columns="2" cellpadding="10">
 				<f:facet name="header">
-					<p:outputLabel value="Cadastro de Tarefa" style="float:left;" />
+					<p:outputLabel value="Cadastro de Tarefa" />
 				</f:facet>
-
+				
 				<p:outputLabel value="Título" />
-				<p:inputText value="#{tarefaController.tarefa.titulo}"
-					required="true" requiredMessage="Informe o título." />
+				<p:inputText id="titulo" value="#{tarefaController.tarefa.titulo}"
+					required="true" requiredMessage="Descreva a tarefa." />
 
 				<p:outputLabel value="Descrição" />
 				<p:inputTextarea value="#{tarefaController.tarefa.descricao}"
