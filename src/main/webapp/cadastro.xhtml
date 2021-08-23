@@ -19,32 +19,32 @@
 				</f:facet>
 				
 				<p:outputLabel value="Título" />
-				<p:inputText id="titulo" value="#{cadastrarTarefaBean.tarefa.titulo}"
+				<p:inputText id="titulo" value="#{cadastroTarefaBean.tarefa.titulo}"
 					required="true" requiredMessage="Descreva a tarefa." />
 
 				<p:outputLabel value="Descrição" />
-				<p:inputTextarea value="#{cadastrarTarefaBean.tarefa.descricao}"
+				<p:inputTextarea value="#{cadastroTarefaBean.tarefa.descricao}"
 					required="true" requiredMessage="Descreva a tarefa." />
 
 				<p:outputLabel value="Responsável" />
-				<p:inputText value="#{cadastrarTarefaBean.tarefa.responsavel}"
+				<p:inputText value="#{cadastroTarefaBean.tarefa.responsavel}"
 					required="true" requiredMessage="Informe o responsável." />
 
 				<p:outputLabel for="prioridade	" value="Prioridade" />
 				<p:selectOneMenu id="prioridade"
-					value="#{cadastrarTarefaBean.tarefa.prioridade}" style="width: 84%">
+					value="#{cadastroTarefaBean.tarefa.prioridade}" style="width: 84%">
 					<f:selectItem itemLabel="Alta" itemValue="Alta" />
 					<f:selectItem itemLabel="Média" itemValue="Média" />
 					<f:selectItem itemLabel="Baixa" itemValue="Baixa" />
 				</p:selectOneMenu>
 
 				<p:outputLabel value="Deadline" />
-				<p:calendar value="#{cadastrarTarefaBean.tarefa.deadline}"
+				<p:calendar value="#{cadastroTarefaBean.tarefa.deadline}"
 					pattern="dd/MM/yyyy" timeZone="America/Brasilia" required="true"
 					requiredMessage="Selecione a data do prazo (deadline)." />
 
 				<p:commandButton id="btn-salvar" value="Cadastrar"
-					action="#{cadastrarTarefaBean.salvar}" />
+					action="#{cadastroTarefaBean.salvar}" />
 			</h:panelGrid>
 		</h:form>
 	</ui:define>
