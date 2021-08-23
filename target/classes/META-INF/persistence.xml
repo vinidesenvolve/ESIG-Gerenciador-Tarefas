@@ -9,16 +9,16 @@
 
 		<properties>
 			<property name="javax.persistence.jdbc.driver"
-				value="org.postgresql.Driver" /> <!-- DB Driver -->
+				value="org.postgresql.Driver" />
 			<property name="javax.persistence.jdbc.url"
-				value="jdbc:postgresql://localhost/gerenciador-tarefas" /> <!-- BD Mane -->
+				value="jdbc:postgresql://localhost/gerenciador-tarefas" />
 			<property name="javax.persistence.jdbc.user"
-				value="postgres" /> <!-- DB User -->
+				value="postgres" />
 			<property name="javax.persistence.jdbc.password"
-				value="qwer" /> <!-- DB Password -->
+				value="qwer" />
 
 			<property name="hibernate.dialect"
-				value="org.hibernate.dialect.PostgreSQL95Dialect" /> <!-- DB Dialect -->
+				value="org.hibernate.dialect.PostgreSQL95Dialect" /> 
 			<property name="hibernate.hbm2ddl.auto" value="update" /> <!-- create / create-drop / update -->
 
 			<property name="hibernate.show_sql" value="true" /> <!-- Show SQL in console -->

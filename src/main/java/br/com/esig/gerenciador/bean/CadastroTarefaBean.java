@@ -43,6 +43,5 @@ public class CadastroTarefaBean {
 	public void setTarefa(Tarefa tarefa) {
 		this.tarefa = tarefa;
 	}
-	
-	
+
 }
