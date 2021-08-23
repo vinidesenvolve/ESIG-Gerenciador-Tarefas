@@ -1,4 +1,4 @@
-package br.com.esig.gerenciador.controller;
+package br.com.esig.gerenciador.bean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -17,14 +16,12 @@ import br.com.esig.gerenciador.util.JpaUtil;
 
 import org.apache.commons.lang3.StringUtils;
 
-@Named(value = "tarefaController")
+@Named(value = "buscaTarefaBean")
 @RequestScoped
-public class TarefaController {
+public class BuscaTarefaBean {
 
 	@Inject
 	private Tarefa tarefa;
-
-	private Long tarefaId;
 
 	private String situacaoBusca;
 
@@ -32,16 +29,8 @@ public class TarefaController {
 
 	@PostConstruct
 	public void postConstruct() {
-		
-		loadTarefas();
-		
-		String tarefaIdParam = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
-				.get("tarefaId");
 
-		if (tarefaIdParam != null) {
-			tarefaId = Long.parseLong(tarefaIdParam);
-			tarefa = buscarPorId(tarefaId);
-		}
+		loadTarefas();
 	}
 
 	public void loadTarefas() {
@@ -59,7 +48,7 @@ public class TarefaController {
 		}
 
 	}
-	
+
 	public void buscarTarefas() {
 		EntityManager entityManager = JpaUtil.getEntityManager();
 
@@ -74,16 +63,13 @@ public class TarefaController {
 			}
 
 			if (situacaoBusca.equals("concluida")) {
-				this.tarefas = buscarTodas().stream()
-					.filter(t -> t.getisConcluida())
-					.collect(Collectors.toList());;
+				this.tarefas = buscarTodas().stream().filter(t -> t.getisConcluida()).collect(Collectors.toList());
+				;
 				return;
-			} 
-			
-			if (situacaoBusca.equals("andamento")){
-				this.tarefas = buscarTodas().stream()
-						.filter(t -> !t.getisConcluida())
-						.collect(Collectors.toList());
+			}
+
+			if (situacaoBusca.equals("andamento")) {
+				this.tarefas = buscarTodas().stream().filter(t -> !t.getisConcluida()).collect(Collectors.toList());
 				return;
 			}
 
@@ -96,7 +82,7 @@ public class TarefaController {
 		}
 
 	}
-	
+
 	public List<Tarefa> buscarTodas() {
 		EntityManager entityManager = JpaUtil.getEntityManager();
 
@@ -157,11 +143,4 @@ public class TarefaController {
 		this.tarefas = tarefas;
 	}
 
-	public Long getTarefaId() {
-		return tarefaId;
-	}
-
-	public void setTarefaId(Long tarefaId) {
-		this.tarefaId = tarefaId;
-	}
 }

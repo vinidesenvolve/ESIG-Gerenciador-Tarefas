@@ -17,17 +17,17 @@
 				</f:facet>
 
 				<p:outputLabel value="Número" />
-				<p:inputText value="#{tarefaController.tarefa.id}" />
+				<p:inputText value="#{buscaTarefaBean.tarefa.id}" />
 
 				<p:outputLabel value="Título/Descrição" />
-				<p:inputText value="#{tarefaController.tarefa.titulo}" />
+				<p:inputText value="#{buscaTarefaBean.tarefa.titulo}" />
 
 				<p:outputLabel value="Responsável" />
-				<p:inputText value="#{tarefaController.tarefa.responsavel}" />
+				<p:inputText value="#{buscaTarefaBean.tarefa.responsavel}" />
 
-				<p:outputLabel for="@next" value="Situação" />
+				<p:outputLabel for="option" value="Situação" />
 				<p:selectOneMenu id="option"
-					value="#{tarefaController.situacaoBusca}" style="width: 60%">
+					value="#{buscaTarefaBean.situacaoBusca}" style="width: 60%">
 					<f:selectItem itemLabel="Todas" itemValue="todas" />
 					<f:selectItem itemLabel="Em andamento" itemValue="andamento" />
 					<f:selectItem itemLabel="Concluída" itemValue="concluida" />
@@ -35,12 +35,12 @@
 
 				<p:outputLabel />
 				<p:commandButton id="btn-buscar" value="Buscar Tarefas"
-					action="#{tarefaController.buscarTarefas}" update="table" />
+					action="#{buscaTarefaBean.buscarTarefas}" update="table" />
 
 			</h:panelGrid>
 		</h:form>
 
-		<p:dataTable value="#{tarefaController.tarefas}" var="tarefa"
+		<p:dataTable value="#{buscaTarefaBean.tarefas}" var="tarefa"
 			border="1" id="table" paginator="true" rows="5" cellspacing="10"
 			cellpadding="20">
 
